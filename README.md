@@ -57,7 +57,11 @@ Princípios de produto:
 
 O vocabulário-base foi organizado a partir de material do Instituto CNV Brasil fornecido como referência para este protótipo. Antes de redistribuir, publicar traduções ou licenciar o conteúdo das cartas, confira permissões, atribuição e eventuais limites de uso da fonte.
 
-O código do projeto e o conteúdo das cartas podem ter licenças diferentes. A escolha de licença ainda deve ser registrada no repositório antes da primeira publicação pública.
+O vocabulário de referência permanece atribuído à fonte. Antes de incorporar materiais adicionais de terceiros ou publicar uma tradução baseada em outra obra, confira as permissões de reutilização aplicáveis.
+
+## Licença
+
+O código e os materiais originais deste repositório estão sob a [licença MIT](LICENSE). A atribuição das fontes de referência deve ser preservada.
 
 ## Como colaborar
 

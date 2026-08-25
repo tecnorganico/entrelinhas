@@ -50,4 +50,4 @@ Evite introduzir cores sem função ou transformar a interface em um sistema de 
 
 ## Licença e autoria
 
-Não envie material de terceiros sem autorização. O repositório ainda precisa registrar uma licença para o código e definir, separadamente, como o conteúdo derivado de fontes de CNV pode ser reutilizado.
+Não envie material de terceiros sem autorização. As contribuições são recebidas sob a licença MIT do repositório; preserve a atribuição das fontes de referência usadas no projeto.

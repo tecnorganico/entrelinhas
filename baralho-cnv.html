@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Um baralho digital de sentimentos e necessidades inspirado na Comunicação Não Violenta.">
+  <title>Entrelinhas — Sentimentos & Necessidades</title>
+  <style>
+    :root { --ink:#f2eddd; --muted:#aaa998; --black:#090a08; --paper:#11130f; --surface:#171a15; --soft:#20241d; --line:#393d32; --red:#c82e3b; --red-deep:#761b25; --green:#267b4f; --green-deep:#0e422b; --yellow:#e8b634; --yellow-dark:#a87c16; --radius:20px; --shadow:0 18px 45px rgba(0,0,0,.46); }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; color:var(--ink); background:var(--black); font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    body::before { content:""; position:fixed; z-index:-1; inset:0; opacity:.17; pointer-events:none; background-image:radial-gradient(rgba(255,255,255,.25) .65px,transparent .65px); background-size:5px 5px; } button,input { font:inherit; } button { cursor:pointer; } .shell { max-width:1180px; margin:auto; padding:0 18px 48px; }
+    .topbar { min-height:70px; display:flex; align-items:center; justify-content:space-between; gap:12px; } .brand { display:flex; align-items:center; gap:10px; font-weight:780; letter-spacing:-.04em; font-size:1.12rem; } .brand-mark { width:27px; height:27px; display:grid; place-items:center; border-radius:50% 50% 50% 10%; background:var(--yellow); color:var(--black); font-size:15px; transform:rotate(-20deg); } .tiny-link { border:0; background:transparent; color:var(--muted); font-size:.8rem; padding:8px 0; }
+    .hero { overflow:hidden; position:relative; isolation:isolate; border:1px solid #32362b; border-radius:29px; min-height:385px; padding:30px 24px; color:#fffdf1; background:linear-gradient(135deg,#11140e 2%,#1a2218 52%,#10120f); display:grid; align-content:end; } .hero::before,.hero::after { content:""; position:absolute; z-index:-1; opacity:.95; } .hero::before { width:430px; height:430px; top:-238px; right:-160px; border:17px solid var(--yellow); border-radius:50%; box-shadow:inset 0 0 0 42px var(--green-deep); } .hero::after { width:470px; height:150px; bottom:-100px; right:-105px; background:var(--red); transform:rotate(-15deg); } .hero-copy { position:relative; z-index:1; max-width:620px; } .eyebrow { margin:0 0 14px; display:flex; align-items:center; gap:8px; color:var(--yellow); text-transform:uppercase; letter-spacing:.12em; font-size:.7rem; font-weight:850; } .eyebrow::before { content:""; width:28px; height:3px; background:currentColor; } h1 { font-size:clamp(2.5rem,9vw,5.8rem); line-height:.91; letter-spacing:-.075em; margin:0; max-width:620px; } .hero p:not(.eyebrow) { max-width:485px; margin:22px 0 0; font-size:1.02rem; color:#d7d5c5; } .hero-actions { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:10px; margin-top:25px; }
+    .btn { min-height:46px; border-radius:3px; border:1px solid transparent; padding:0 18px; font-weight:800; letter-spacing:.01em; transition:transform .18s,background .18s,border-color .18s; } .btn:hover { transform:translateY(-2px); } .btn:focus-visible,.card:focus-visible,.tab:focus-visible,.close:focus-visible { outline:3px solid var(--yellow); outline-offset:3px; } .btn-primary { background:var(--yellow); color:var(--black); } .btn-primary:hover { background:#ffd45c; } .btn-ghost { color:#fffbed; border-color:#777b6c; background:rgba(0,0,0,.18); }
+    .intro { display:grid; gap:16px; padding:30px 4px 24px; } .intro h2 { margin:0; font-size:1.55rem; letter-spacing:-.04em; } .intro p { margin:0; color:var(--muted); max-width:690px; } .filters { display:grid; gap:12px; margin:4px 0 18px; } .tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; padding:5px; border:1px solid #2b3027; border-radius:5px; background:#151813; } .tab { min-height:42px; border:0; border-radius:2px; background:transparent; color:var(--muted); font-size:.83rem; font-weight:780; } .tab[data-filter="sentimento"] { color:#e87178; } .tab[data-filter="necessidade"] { color:#5fc286; } .tab.active { color:var(--black); background:var(--yellow); box-shadow:0 2px 8px rgba(0,0,0,.22); } .tab.active[data-filter="sentimento"] { color:#fff4dd; background:var(--red); } .tab.active[data-filter="necessidade"] { color:#fff4dd; background:var(--green); }
+    .search { width:100%; min-height:48px; padding:0 16px 0 42px; border:1px solid var(--line); border-radius:4px; color:var(--ink); background:#151813 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa998' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='6'/%3E%3Cpath d='m16 16 4 4'/%3E%3C/svg%3E") 15px center/18px no-repeat; } .search:focus { outline:3px solid rgba(232,182,52,.35); border-color:var(--yellow); } .search::placeholder { color:#858778; } .count { margin:4px 0 15px; color:var(--muted); font-size:.86rem; }
+    .deck { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .card { position:relative; min-height:172px; overflow:hidden; padding:17px 14px; text-align:left; color:var(--ink); border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:5px; background:linear-gradient(145deg,#1a1e18,#11130f); box-shadow:0 1px 0 rgba(255,255,255,.03) inset; transition:transform .18s,box-shadow .18s,border-color .18s; } .card:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:var(--shadow); } .card::after { content:""; width:112px; height:112px; position:absolute; right:-56px; bottom:-58px; border-radius:50%; border:16px solid var(--accent); opacity:.33; } .card-top { display:flex; justify-content:space-between; align-items:center; gap:8px; position:relative; z-index:1; } .chip { color:var(--accent-ink); background:var(--accent); border-radius:2px; padding:4px 8px; font-size:.64rem; font-weight:900; letter-spacing:.07em; text-transform:uppercase; } .arrow { width:26px; height:26px; display:grid; place-items:center; border:1px solid #525649; color:var(--ink); background:rgba(0,0,0,.23); font-size:1.1rem; } .card h3 { position:relative; z-index:1; margin:34px 0 2px; font-size:clamp(1.15rem,4.2vw,1.5rem); line-height:1.04; letter-spacing:-.055em; overflow-wrap:anywhere; } .card p { position:relative; z-index:1; margin:7px 0 0; max-width:170px; color:var(--muted); font-size:.77rem; line-height:1.32; } .empty { grid-column:1/-1; padding:36px 18px; border:1px dashed var(--line); border-radius:5px; text-align:center; color:var(--muted); }
+    .how { margin-top:42px; padding:24px; border:1px solid #34392f; border-left:5px solid var(--yellow); border-radius:5px; background:#171a15; } .how h2 { margin:0 0 15px; font-size:1.3rem; letter-spacing:-.04em; } .steps { display:grid; gap:13px; } .step { display:grid; grid-template-columns:32px 1fr; gap:10px; align-items:start; } .step-num { display:grid; place-items:center; width:29px; height:29px; background:var(--yellow); color:var(--black); font-size:.77rem; font-weight:900; } .step p { margin:2px 0 0; color:var(--muted); font-size:.9rem; } footer { margin-top:34px; border-top:1px solid var(--line); padding:20px 2px 0; color:var(--muted); font-size:.76rem; }
+    .modal[hidden] { display:none; } .modal { position:fixed; inset:0; z-index:10; display:grid; align-items:end; background:rgba(0,0,0,.78); animation:fade .2s ease-out; } .dialog { position:relative; max-height:91vh; overflow:auto; border:1px solid #3b4034; border-top:5px solid var(--detail,var(--yellow)); border-radius:5px 5px 0 0; padding:27px 20px 34px; background:#11140f; box-shadow:0 -12px 45px rgba(0,0,0,.62); animation:rise .28s cubic-bezier(.2,.8,.2,1); } .dialog-inner { max-width:740px; margin:auto; } .close { position:absolute; top:14px; right:15px; width:39px; height:39px; border:1px solid #4e5348; border-radius:50%; color:var(--ink); background:#1d211b; font-size:1.45rem; line-height:1; } .dialog-type { margin:0 45px 8px 0; color:var(--detail,var(--yellow)); font-weight:900; font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; } .dialog h2 { margin:0; font-size:clamp(2.2rem,9vw,4.2rem); line-height:.94; letter-spacing:-.075em; } .definition { margin:20px 0 0; font-size:1.06rem; line-height:1.5; } .modal-grid { display:grid; gap:12px; margin-top:20px; } .modal-block { padding:16px; border:1px solid #393e34; border-radius:4px; background:#191d17; } .modal-block h3 { margin:0 0 7px; color:#f3e7b9; font-size:.83rem; letter-spacing:.02em; } .modal-block p { margin:0; color:var(--muted); font-size:.92rem; } .prompt { margin-top:14px; padding:15px 17px; border-left:4px solid var(--detail,var(--yellow)); border-radius:0 3px 3px 0; background:#1c2119; color:#ece6d5; font-size:.92rem; }
+    @keyframes rise { from { transform:translateY(20px); opacity:.4; } to { transform:none; opacity:1; } } @keyframes fade { from { opacity:0; } to { opacity:1; } }
+    @media (min-width:650px) { .shell { padding-left:28px; padding-right:28px; } .hero { min-height:435px; padding:48px; } .intro { grid-template-columns:1.1fr .9fr; align-items:end; padding:40px 4px 29px; } .filters { grid-template-columns:1fr 1fr; align-items:center; } .deck { grid-template-columns:repeat(3,1fr); gap:16px; } .card { min-height:195px; padding:20px; } .modal { align-items:center; padding:22px; } .dialog { width:min(760px,100%); max-height:88vh; border-radius:5px; padding:38px; } .modal-grid { grid-template-columns:1fr 1fr; } .modal-block:last-child { grid-column:1/-1; } } @media (min-width:980px) { .deck { grid-template-columns:repeat(4,1fr); } .card { min-height:205px; } .how { padding:30px; } .steps { grid-template-columns:repeat(3,1fr); gap:25px; } } @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">↗</span> entrelinhas</div>
+      <button class="tiny-link" type="button" id="aboutButton">sobre o baralho</button>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">baralho de CNV</p>
+        <h1 id="hero-title">Nomear abre espaço.</h1>
+        <p>Um convite para pausar, perceber o que está vivo agora e encontrar palavras para sentimentos e necessidades.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="drawButton" type="button">tirar uma carta</button>
+        <a class="btn btn-ghost" href="#baralho">explorar o baralho</a>
+      </div>
+    </section>
+
+    <section id="baralho" aria-labelledby="deck-title">
+      <div class="intro">
+        <h2 id="deck-title">O que está pedindo atenção?</h2>
+        <p>Selecione uma carta para ler uma definição, reconhecer contextos possíveis e abrir uma pergunta de cuidado.</p>
+      </div>
+      <div class="filters" aria-label="Filtros do baralho">
+        <div class="tabs" role="tablist" aria-label="Tipo de carta">
+          <button class="tab active" type="button" role="tab" aria-selected="true" data-filter="todos">todas</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-filter="sentimento">sentimentos</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-filter="necessidade">necessidades</button>
+        </div>
+        <input class="search" id="search" type="search" autocomplete="off" placeholder="buscar uma palavra" aria-label="Buscar carta">
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <div class="deck" id="deck"></div>
+    </section>
+
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title">Um jeito simples de usar</h2>
+      <div class="steps">
+        <article class="step"><span class="step-num">1</span><div><strong>Pare por um instante.</strong><p>Respire e escolha uma carta que pareça se aproximar da sua experiência.</p></div></article>
+        <article class="step"><span class="step-num">2</span><div><strong>Leia sem se cobrar.</strong><p>Uma palavra pode servir, não servir ou servir só em parte. Ajuste o vocabulário ao seu momento.</p></div></article>
+        <article class="step"><span class="step-num">3</span><div><strong>Faça um pedido de cuidado.</strong><p>Use a necessidade como pista para um próximo passo possível, consigo ou com alguém.</p></div></article>
+      </div>
+    </section>
+
+    <footer>Protótipo independente inspirado na Comunicação Não Violenta. Vocabulário-base organizado a partir do material enviado, creditado ao Instituto CNV Brasil. Isto é uma ferramenta de reflexão, não um diagnóstico.</footer>
+  </main>
+
+  <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <article class="dialog">
+      <button class="close" id="closeModal" type="button" aria-label="Fechar detalhes">×</button>
+      <div class="dialog-inner" id="modalContent"></div>
+    </article>
+  </div>
+
+  <script>
+    const groups = {
+      sentimentos: {
+        "Triste": "Desapontamento, Desencorajamento, Desânimo, Desamparo, Solidão, Adormecimento, Fragilidade, Vergonha, Culpa",
+        "Confuso": "Cuidado, Dúvida, Hesitação, Perplexidade, Agitação, Relutância, Divisão, Desconforto, Inquietação, Incerteza, Surpresa",
+        "Raiva": "Agitação, Aborrecimento, Chateação, Nojo, Fúria, Frustração, Impaciência, Ressentimento, Inveja",
+        "Cansado": "Esgotamento, Estafa, Distração, Exaustão, Fatiga, Desesperança, Indiferença, Letargia, Inquietude",
+        "Medo": "Alarme, Preocupação, Ansiedade, Nervosismo, Sobrecarga, Choque, Tensão, Terror, Cautela, Ciúmes",
+        "Calmo": "Absorção, Conforto, Alívio, Plenitude, Paz, Relaxamento, Segurança, Serenidade, Tranquilidade",
+        "Satisfeito": "Encorajamento, Empolgação, Felicidade, Entusiasmo, Radiante, Êxtase, Revigoração",
+        "Amigável": "Apreciação, Gratidão, Abertura, Receptividade, Calor humano, Inspiração, Contentamento, Orgulho",
+        "Animado": "Avidez, Curiosidade, Energia, Engajamento, Interesse, Fascinação, Intrigamento, Confiança, Esperança",
+        "Amoroso": "Com ternura, Paixão, Encantamento, Maravilhamento, Sensibilidade"
+      },
+      necessidades: {
+        "Corpo e bem-estar": "Ar, Comida, Água, Saúde, Abrigo, Movimento, Toque, Privacidade, Descanso, Bem-estar, Espaço, Presença",
+        "Segurança": "Segurança, Estabilidade, Coerência, Proteção, Justiça, Equidade",
+        "Aprender e criar": "Criatividade, Crescimento, Aprendizado, Descoberta, Brincadeira, Divertimento, Espontaneidade, Variedade, Lazer, Celebração, Diálogo, Desafio, Estímulo, Informação, Entendimento, Discernimento, Compreensão, Reflexão",
+        "Sentido e direção": "Significado, Sentido, Propósito, Motivação, Direção, Inspiração, Esperança, Desfrute, Cura",
+        "Integridade e realização": "Autenticidade, Integridade, Respeito, Auto-estima, Honestidade, Efetividade, Progresso, Realização, Contribuição, Evolução, Ordem, Competência, Sustentabilidade",
+        "Acolher transições": "Aceitar limitações, Lamentar, Enlutar (luto), Encerramento",
+        "Autonomia e vitalidade": "Beleza, Energia, Vitalidade, Equilíbrio, Paz, Compaixão, Natureza, Comunidade, Autonomia, Expressão, Escolha, Liberdade, Individualidade, Facilidade, Solitude",
+        "Vínculo e apoio": "Pertencimento, Inclusão, Conexão, Aceitação, Afeto, Interdependência, Harmonia, Ser visto, Proximidade, Consideração, Empatia, Companhia, Parceria, Realidade compartilhada, Intimidade, Apoio, Suporte, Confiança, Comprometimento, Aconchego, Verdade, Comunicação, Cuidado, Reconhecimento, Valorização, Apreciação, Co-criação, Colaboração, Cooperação"
+      }
+    };
+
+    const descriptions = {
+      "Triste":"Uma sensação de perda, afastamento ou frustração diante de algo importante.", "Confuso":"Uma experiência de falta de clareza, quando há informações, desejos ou caminhos em disputa.", "Raiva":"Uma ativação intensa que pode sinalizar limite, dor, injustiça ou necessidade não atendida.", "Cansado":"Um estado de redução de energia física, mental ou emocional, frequentemente associado a esforço prolongado.", "Medo":"Uma reação diante de perigo, ameaça percebida ou incerteza sobre o que pode acontecer.", "Calmo":"Um estado de menor ativação, em que o corpo e a mente encontram espaço para repousar ou estar presentes.", "Satisfeito":"Uma experiência de contentamento ou alegria quando algo valorizado parece estar sendo nutrido.", "Amigável":"Uma disposição de abertura e calor no encontro com alguém, consigo ou com a vida.", "Animado":"Um impulso de interesse e energia voltado a uma possibilidade, descoberta ou ação.", "Amoroso":"Uma vivência de afeto, ternura ou encantamento que favorece aproximação e cuidado.",
+      "Descanso":"Tempo e condições para recuperar energia e diminuir a exigência.", "Autenticidade":"Poder agir e se expressar de um modo coerente com o que é verdadeiro para si.", "Conexão":"Sentir vínculo, contato ou ressonância significativa com alguém ou algo.", "Segurança":"Condições de proteção, previsibilidade e menor risco para existir e agir.", "Autonomia":"Ter margem real de escolha sobre a própria vida, ritmo e decisões.", "Cuidado":"Atenção concreta ao bem-estar, à vulnerabilidade e ao que precisa ser protegido.", "Empatia":"Ser recebido com interesse respeitoso pelo que se sente e se vive, sem reduzir a experiência a um julgamento.", "Pertencimento":"Reconhecer-se como parte bem-vinda de um grupo, lugar ou relação.", "Compreensão":"Conseguir captar sentido, contexto e nuances de uma experiência ou ideia.", "Liberdade":"Ter possibilidades e espaço para escolher caminhos sem coerção indevida.", "Paz":"Uma condição de serenidade e ausência de conflito ou ameaça persistente.", "Respeito":"Ser tratado, e tratar outras pessoas, com dignidade e consideração por seus limites.", "Presença":"Dispor de atenção e companhia de qualidade no momento compartilhado.", "Reconhecimento":"Ter contribuições, existência ou esforço percebidos e nomeados.", "Justiça":"Viver relações e estruturas que considerem equidade, reparação e dignidade."
+    };
+
+    const palettes = { sentimento:["#c82e3b","#c82e3b","#c82e3b","#c82e3b"], necessidade:["#267b4f","#267b4f","#267b4f","#267b4f"] };
+    const ink = { "#c82e3b":"#fff5df", "#267b4f":"#fff5df" };
+    const makeCards = () => Object.entries(groups).flatMap(([kind, themes]) => Object.entries(themes).flatMap(([theme, names]) => [
+      ...(kind === "sentimentos" ? [{ name:theme, kind:"sentimento", theme:"Sentimentos" }] : []),
+      ...names.split(", ").map(name => ({ name, kind:kind === "sentimentos" ? "sentimento" : "necessidade", theme }))
+    ]));
+    const cards = makeCards().map((card, id) => ({ ...card, id }));
+    const deck = document.querySelector('#deck'); const count = document.querySelector('#count'); const search = document.querySelector('#search'); const modal = document.querySelector('#modal'); const content = document.querySelector('#modalContent');
+    let filter = 'todos'; let lastFocus = null;
+    const plural = n => `${n} carta${n === 1 ? '' : 's'} ${n === 1 ? 'disponível' : 'disponíveis'}`;
+    const shortText = card => card.kind === 'sentimento' ? `Sentimento · ${card.theme}` : `Necessidade · ${card.theme}`;
+    function render() {
+      const query = search.value.trim().toLocaleLowerCase('pt-BR');
+      const shown = cards.filter(card => (filter === 'todos' || card.kind === filter) && `${card.name} ${card.theme}`.toLocaleLowerCase('pt-BR').includes(query));
+      count.textContent = plural(shown.length);
+      if (!shown.length) { deck.innerHTML = '<div class="empty">Nenhuma carta encontrada. Tente outra palavra.</div>'; return; }
+      deck.innerHTML = shown.map((card, index) => { const color = palettes[card.kind][index % 4]; return `<button class="card" type="button" data-id="${card.id}" style="--accent:${color};--accent-ink:${ink[color]}" aria-label="Abrir carta ${card.name}, ${shortText(card)}"><span class="card-top"><span class="chip">${card.kind}</span><span class="arrow">↗</span></span><h3>${card.name}</h3><p>${card.theme}</p></button>`; }).join('');
+    }
+    function genericDefinition(card) { return card.kind === 'sentimento' ? `Uma palavra para reconhecer uma vivência emocional ligada ao campo “${card.theme.toLowerCase()}”. Ela pode aparecer com intensidades diferentes e não define quem você é.` : `Uma necessidade humana ligada ao campo “${card.theme.toLowerCase()}”. Não é uma estratégia pronta: pode ser nutrida de mais de uma maneira.`; }
+    function examples(card) {
+      const need = card.kind === 'necessidade';
+      const library = {
+        "Corpo e bem-estar": need ? "Pode ganhar cuidado ao comer, repousar, buscar abrigo, movimentar-se com gentileza ou estabelecer um intervalo." : "Pode aparecer quando o corpo pede pausa, proteção ou condições básicas.",
+        "Segurança": need ? "Pode ser nutrida com acordos claros, limites, informação confiável ou apoio de pessoas e serviços." : "Pode aparecer diante de risco, incerteza ou mudança.",
+        "Aprender e criar": need ? "Pode ganhar espaço com uma conversa curiosa, estudo, jogo, experimento ou tempo sem obrigação de acertar." : "Pode surgir quando há uma pergunta, uma descoberta ou desafio pela frente.",
+        "Sentido e direção": need ? "Pode ser nutrida ao recordar valores, escolher um próximo passo pequeno ou contribuir com algo importante." : "Pode surgir quando um caminho parece incerto ou pouco significativo.",
+        "Integridade e realização": need ? "Pode ganhar cuidado com um limite, uma escolha alinhada a valores, feedback ou tempo para construir competência." : "Pode aparecer quando algo toca valores ou a sensação de realização.",
+        "Acolher transições": need ? "Pode ser nutrida com tempo, rituais, conversa, despedida e apoio para atravessar uma mudança." : "Pode aparecer diante de encerramentos e mudanças.",
+        "Autonomia e vitalidade": need ? "Pode ganhar espaço escolhendo ritmo, ambiente, companhia ou uma pausa que devolva fôlego." : "Pode surgir quando há desejo de escolha, equilíbrio ou renovação.",
+        "Vínculo e apoio": need ? "Pode ser nutrida com escuta, presença, pedido claro, reciprocidade ou uma mensagem de aproximação." : "Pode aparecer quando uma relação importa ou quando se sente distância."
+      };
+      if (card.kind === 'sentimento') return library[card.theme] || `Pode surgir em situações relacionadas a ${card.theme.toLowerCase()}, especialmente quando algo importante parece atendido ou em falta.`;
+      return library[card.theme] || `Pode ganhar cuidado por diferentes meios, em diálogo com o contexto, os limites e as outras pessoas envolvidas.`;
+    }
+    function prompt(card) { return card.kind === 'sentimento' ? `Pergunta de exploração: quando “${card.name}” aparece, o que você percebe que valoriza ou precisa proteger?` : `Pergunta de cuidado: qual pedido pequeno, concreto e possível poderia hoje nutrir ${card.name.toLowerCase()}?`; }
+    function openCard(id, trigger) {
+      const card = cards.find(item => item.id === Number(id)); if (!card) return;
+      lastFocus = trigger || document.activeElement;
+      const title = card.kind === 'sentimento' ? 'sentimento' : 'necessidade';
+      document.querySelector('.dialog').style.setProperty('--detail', card.kind === 'sentimento' ? '#c82e3b' : '#267b4f');
+      content.innerHTML = `<p class="dialog-type">${title} · ${card.theme}</p><h2 id="modalTitle">${card.name}</h2><p class="definition">${descriptions[card.name] || genericDefinition(card)}</p><div class="modal-grid"><section class="modal-block"><h3>${card.kind === 'sentimento' ? 'Pode surgir quando...' : 'Pode ganhar cuidado quando...'}</h3><p>${examples(card)}</p></section><section class="modal-block"><h3>Um lembrete CNV</h3><p>${card.kind === 'sentimento' ? 'Sentimentos oferecem pistas sobre o que é importante. Não precisam ser justificados para merecer atenção.' : 'Necessidades são humanas e universais; o desafio é encontrar estratégias que respeitem todas as pessoas envolvidas.'}</p></section></div><p class="prompt">${prompt(card)}</p>`;
+      modal.hidden = false; document.body.style.overflow = 'hidden'; document.querySelector('#closeModal').focus();
+    }
+    function closeModal() { modal.hidden = true; document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); }
+    document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => { filter = tab.dataset.filter; document.querySelectorAll('.tab').forEach(item => { const on=item===tab; item.classList.toggle('active',on); item.setAttribute('aria-selected',on); }); render(); }));
+    search.addEventListener('input', render);
+    deck.addEventListener('click', event => { const button = event.target.closest('.card'); if (button) openCard(button.dataset.id, button); });
+    document.querySelector('#drawButton').addEventListener('click', () => { const pool = cards.filter(card => filter === 'todos' || card.kind === filter); openCard(pool[Math.floor(Math.random()*pool.length)].id, document.querySelector('#drawButton')); });
+    document.querySelector('#aboutButton').addEventListener('click', () => { filter = 'todos'; search.value = ''; render(); document.querySelector('#how-title').scrollIntoView({ behavior:'smooth', block:'start' }); });
+    document.querySelector('#closeModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', event => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !modal.hidden) closeModal(); });
+    render();
+  </script>
+</body>
+</html>
